@@ -26,7 +26,7 @@ export async function POST(request) {
         const trimmedProblemId = problemId.trim().toString();
         console.log("trimmedProblemId: ", trimmedProblemId);
 
-        const problem = await fetch(`http://localhost:3000/api/lcproblems/${trimmedProblemId}`);
+        const problem = await fetch(`https://leetcoode.vercel.app/api/lcproblems/${trimmedProblemId}`);
         console.log("Fetch response status: ", problem.status);
 
         if (!problem.ok) {
