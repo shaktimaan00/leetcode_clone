@@ -4,10 +4,16 @@ import { LCProblem } from '@/models/LCProblem';
 import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+interface Context {
+    params: {
+        id: string;
+    };
+}
+
+export async function GET(request: Request, context: Context) {
     try {
         await connectDB();
-        const { id } = await params;
+        const { id } = context.params;
 
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return NextResponse.json({ error: 'Invalid problem ID' }, { status: 400 });
