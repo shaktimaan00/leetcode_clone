@@ -4,18 +4,14 @@ import { LCProblem } from '@/models/LCProblem';
 import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
 
-interface Context {
-    params: {
-        id: string;
-    };
-}
-
-export async function GET(request: Request, context: Context) {
+export async function GET(request: Request) {
     try {
         await connectDB();
-        const { id } = context.params;
-
-        if (!mongoose.Types.ObjectId.isValid(id)) {
+        // ✅ Extract `id` from request URL
+        const url = new URL(request.url);
+        const id = url.pathname.split('/').pop(); // Extract last part of the URL
+        
+        if (!id || !mongoose.Types.ObjectId.isValid(id)) {
             return NextResponse.json({ error: 'Invalid problem ID' }, { status: 400 });
         }
 
