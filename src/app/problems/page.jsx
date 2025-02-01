@@ -1,5 +1,4 @@
 import { connectDB } from '@/lib/db';
-import { Problem } from '@/models/Problem';
 import { LCProblem } from '@/models/LCProblem';
 import Link from 'next/link';
 
