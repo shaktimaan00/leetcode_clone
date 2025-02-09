@@ -62,7 +62,7 @@ const ProblemPage = ({ params }) => {
   if (!problem) return <div>Loading problem...</div>;
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="bg-black text-gray-100 h-screen flex flex-col">
       <div className="p-4 border-b flex justify-between items-center">
         <div className='flex-col'>
           <div className='pb-5'>

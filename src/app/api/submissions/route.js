@@ -8,8 +8,11 @@ export async function GET() {
         const submissions = await Submission.find({});
         return NextResponse.json(submissions);
     } catch (error) {
-        return NextResponse.json(
-            { error: "Failed to fetch submissions" },
+        return NextResponse.json({ 
+                error: "Failed to fetch submissions",
+                message : error.message,
+                success : false
+            },
             { status: 500 }
         );
     }
@@ -40,7 +43,7 @@ export async function POST(request) {
         const functionNameMatch = code.match(/def\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\(/);
         const functionName = functionNameMatch ? functionNameMatch[1] : null;
         if (!functionName) {
-            return NextResponse.json({ error: "Function name not found" }, { status: 400 });
+            return NextResponse.json({ error: "Function name not found", success : false }, { status: 400 });
         }
 
         const results = await Promise.all(
@@ -80,6 +83,10 @@ export async function POST(request) {
                         }
                     } catch (error) {
                         console.error(`Attempt ${attempt}: Execution failed`, error);
+                        return NextResponse.json(
+                            { expected: testCase.expectedOutput, actual: "Execution failed", passed: false, success : false },
+                            { status: 500 }
+                        );
                     }
 
                     if (attempt < 5) {
@@ -120,13 +127,14 @@ export async function POST(request) {
         return NextResponse.json({
             status,
             results,
-            submissionId: submission._id
+            submissionId: submission._id,
+            success : true
         }, { status: 201 });
 
     } catch (error) {
         console.error('Error processing submission:', error);
         return NextResponse.json(
-            { error: "Failed to process submission" },
+            { error: "Failed to process submission", success : false },
             { status: 500 }
         );
     }
